@@ -1,4 +1,5 @@
 secret_key.txt
 db.sqlite3
-blog/__pycache__
+*__pycache__*
 blog_mechanisms.txt
+.vscode/
