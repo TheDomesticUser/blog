@@ -1,1 +1,3 @@
 secret_key.txt
+db.sqlite3
+blog/__pycache__
