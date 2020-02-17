@@ -15,7 +15,7 @@ class Post(models.Model):
     date_posted = models.DateField()
 
     def __str__(self):
-        return self.commenter + ': ' + self.date_posted
+        return self.author + ': ' + self.date_posted
 
 class Comment(models.Model):
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commenter')
@@ -24,7 +24,7 @@ class Comment(models.Model):
     date_commented = models.DateField()
 
     def __str__(self):
-        return self.author + ': ' + self.date_commented
+        return self.commenter + ': ' + self.date_commented
 
 # Admins
 # class AdminPost(models.Model):
