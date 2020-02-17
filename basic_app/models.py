@@ -11,16 +11,16 @@ class User(models.Model):
 
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
-    message = models.CharField(max_length=2048)
+    content = models.CharField(max_length=2048)
     date_posted = models.DateField()
 
     def __str__(self):
         return self.commenter + ': ' + self.date_posted
 
 class Comment(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
+    commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commenter')
     post_commented = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_commented')
-    message = models.CharField(max_length=1024)
+    comment = models.CharField(max_length=1024)
     date_commented = models.DateField()
 
     def __str__(self):
