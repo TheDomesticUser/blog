@@ -1,10 +1,15 @@
 from django.shortcuts import render
-from django.views.generic import (TemplateView, ListView, FormView,
+from django.views.generic import (View, TemplateView, ListView, FormView,
                                     DetailView, CreateView, UpdateView, DeleteView)
-from . import forms
-from django.urls import reverse
-from . import models
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
+
+from . import forms
+from . import models
+
+# Temporary
+from django.http import HttpResponse
 
 class IndexView(TemplateView):
     template_name = 'basic_app/index.html'
@@ -20,7 +25,7 @@ class PostsDetailView(DetailView):
 
     template_name = 'basic_app/posts.html'
 
-class SignUpFormView(FormView):    
+class SignUpFormView(CreateView):    
     template_name = 'basic_app/signup.html'
     form_class = forms.SignUpForm
 
@@ -34,3 +39,21 @@ class SignUpFormView(FormView):
         user.save()
 
         return render(self.request, self.template_name, context={ 'signup_success': True, 'form': form })
+
+class LoginFormView(View):
+    def get(self, request):
+        return render(request, 'basic_app/login.html', context={ 'form': forms.LoginForm })
+    
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = models.User.objects.filter(username=username).first()
+
+        # If user is valid
+        if user:
+            if check_password(password, user.password):
+                print('success')
+                return HttpResponse('<h1>Success</h1>')
+        
+        return HttpResponse('<h1>Failed</h1>')
