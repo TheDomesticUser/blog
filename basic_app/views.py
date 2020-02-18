@@ -32,7 +32,7 @@ class SignUpFormView(CreateView):
     def form_valid(self, form):
         user = form.save(commit=False)
 
-        # hash the password
+        # hash the password. Argon2 by default
         user.password = make_password(user.password)
 
         # save the user into the database
@@ -50,10 +50,20 @@ class LoginFormView(View):
 
         user = models.User.objects.filter(username=username).first()
 
-        # If user is valid
+        # check if user is valid, and correct password is specified
         if user:
             if check_password(password, user.password):
-                print('success')
+                # Redirect the user to their blogs
                 return HttpResponse('<h1>Success</h1>')
         
         return HttpResponse('<h1>Failed</h1>')
+
+class PostsListView(ListView):
+    template_name = 'basic_app/posts.html'
+
+    model = models.Post
+    object_list = 'posts_list'
+    
+    def get_queryset(self):
+        return models.Post.objects.order_by('date_posted')
+    # iterate through each of the posts, displaying and ordering them through post date
