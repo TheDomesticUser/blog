@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import (View, TemplateView, ListView, FormView,
                                     DetailView, CreateView, UpdateView, DeleteView)
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth import login, logout # May not be required
 
 from . import forms
 from . import models
@@ -40,23 +42,12 @@ class SignUpFormView(CreateView):
 
         return render(self.request, self.template_name, context={ 'signup_success': True, 'form': form })
 
-class LoginFormView(View):
-    def get(self, request):
-        return render(request, 'basic_app/login.html', context={ 'form': forms.LoginForm })
-    
-    def post(self, request):
-        username = request.POST['username']
-        password = request.POST['password']
+class UserLoginView(LoginView):
+    template_name = 'basic_app/login.html'
 
-        user = models.User.objects.filter(username=username).first()
-
-        # check if user is valid, and correct password is specified
-        if user:
-            if check_password(password, user.password):
-                # Redirect the user to their blogs
-                return HttpResponse('<h1>Success</h1>')
-        
-        return HttpResponse('<h1>Failed</h1>')
+@login_required
+class UserLogoutView(LogoutView):
+    template_name = 'basic_app/base.html'
 
 class PostsListView(ListView):
     template_name = 'basic_app/posts.html'

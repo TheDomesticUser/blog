@@ -1,10 +1,18 @@
 from django.db import models
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser, AbstractBaseUser
 
 # Regular users
-class User(models.Model):
+class User(AbstractUser):
     username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=20)
     email = models.EmailField(max_length=256)
+    last_login = models.DateField(null=True)
+
+    USERNAME_FIELD = 'username'
+    EMAIL_FIELD = 'email'
+
+    REQUIRED_FIELDS = [EMAIL_FIELD]
 
     def __str__(self):
         return self.username
