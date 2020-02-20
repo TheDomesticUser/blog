@@ -18,12 +18,13 @@ class User(AbstractUser):
         return self.username
 
 class Post(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author', )
+    title = models.CharField(max_length=128)
     content = models.CharField(max_length=2048)
-    date_posted = models.DateField()
+    date_posted = models.DateField(auto_now=True)
 
     def __str__(self):
-        return self.author + ': ' + self.date_posted
+        return self.author.username + ': ' + str(self.date_posted)
 
 class Comment(models.Model):
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commenter')
@@ -32,7 +33,7 @@ class Comment(models.Model):
     date_commented = models.DateField()
 
     def __str__(self):
-        return self.commenter + ': ' + self.date_commented
+        return self.commenter.username + ': ' + str(self.date_commented)
 
 # Admins
 # class AdminPost(models.Model):
