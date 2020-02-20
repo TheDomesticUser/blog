@@ -33,7 +33,7 @@ class PostsDetailView(DetailView):
 
     template_name = 'basic_app/posts.html'
 
-class SignUpFormView(CreateView):    
+class SignUpCreateView(CreateView):    
     template_name = 'basic_app/signup.html'
     form_class = forms.SignUpForm
 
@@ -79,3 +79,15 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         post.save()
 
         return redirect('../posts')
+
+class FeedbackCreateView(CreateView):
+    template_name = 'basic_app/feedback.html'
+    model = models.Feedback
+
+    fields = ['content']
+
+    def form_valid(self, form):
+        return render(self.request, self.template_name, context={
+            'form': form,
+            'valid_feedback': True
+        })

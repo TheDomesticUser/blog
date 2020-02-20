@@ -35,6 +35,13 @@ class Comment(models.Model):
     def __str__(self):
         return self.commenter.username + ': ' + str(self.date_commented)
 
+class Feedback(models.Model):
+    content = models.CharField(max_length=1024)
+    datetime_sent = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.datetime_sent)
+
 # Admins
 # class AdminPost(models.Model):
 #     post = models.OneToOneField(Post, on_delete=models.CASCADE)
