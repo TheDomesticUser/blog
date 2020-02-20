@@ -5,11 +5,14 @@
 {% block body %}
   <h1>Posts</h1>
 
-  {% if posts_list %}
-    <ul>
-      {% for post in posts_list %}
-        <li>{{ post.author }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+  {% for post in object_list %}
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">{{ post.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ post.author.username }}</h6>
+        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text"><small class="text-muted">{{ post.date_posted }}</small></p>
+      </div>
+    </div>
+  {% endfor %}
 {% endblock %}

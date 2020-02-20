@@ -35,7 +35,10 @@
         </li>
         {% else %}
 
-        <!-- Logout is only available when user is already logged in-->
+        <!-- Creating a post and logging out is only available when user is already logged in-->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'basic_app:create_post' %}">Create a post</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'basic_app:logout' %}">Logout</a>
         </li>

@@ -57,10 +57,6 @@ class PostsListView(ListView):
 
     model = models.Post
     object_list = 'posts_list'
-    
-    def get_queryset(self):
-        return models.Post.objects.order_by('date_posted')
-    # iterate through each of the posts, displaying and ordering them through post date
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = 'basic_app/create_post.html'
