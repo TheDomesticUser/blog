@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 
+from django.urls import reverse
+from django.shortcuts import redirect
+
 from . import forms
 from . import models
 
@@ -58,13 +61,13 @@ class PostsListView(ListView):
     model = models.Post
     object_list = 'posts_list'
 
+    ordering = ['-datetime_posted']
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = 'basic_app/create_post.html'
     login_url = '../../login/'
 
-    model = models.Post
-    
-    fields = ('title', 'content')
+    form_class = forms.CreatePostForm
 
     def form_valid(self, form):
         data = form.cleaned_data
@@ -75,4 +78,4 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
         post.save()
 
-        return render(self.request, 'basic_app/posts_list.html')
+        return redirect('../posts')

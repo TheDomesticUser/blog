@@ -21,7 +21,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
     title = models.CharField(max_length=128)
     content = models.CharField(max_length=1024)
-    date_posted = models.DateField(auto_now=True)
+    datetime_posted = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -30,7 +30,7 @@ class Comment(models.Model):
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commenter')
     post_commented = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_commented')
     comment = models.CharField(max_length=1024)
-    date_commented = models.DateField()
+    datetime_commented = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.commenter.username + ': ' + str(self.date_commented)
