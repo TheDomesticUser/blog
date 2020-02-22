@@ -8,6 +8,9 @@ class User(AbstractUser):
     password = models.CharField(max_length=20)
     email = models.EmailField(max_length=256)
     last_login = models.DateField(null=True)
+    profile_pic = models.ImageField(upload_to='profiles/', null=True, blank=True)
+    desc = models.CharField(max_length=1024, default='', blank=True)
+    is_admin = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
@@ -43,8 +46,8 @@ class Feedback(models.Model):
         return str(self.datetime_sent)
 
 # Admins
-# class AdminPost(models.Model):
-#     post = models.OneToOneField(Post, on_delete=models.CASCADE)
+class AdminPost(models.Model):
+    post = models.OneToOneField(Post, on_delete=models.CASCADE)
 
-#     def __str__(self):
-#         return self.blog.commenter
+    def __str__(self):
+        return self.blog.commenter

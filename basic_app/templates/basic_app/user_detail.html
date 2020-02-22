@@ -1,0 +1,10 @@
+{% extends 'basic_app/base.html' %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block body %}
+  <h1>{{ object.username }}</h1>
+  <h1>{{ object.profile_pic }}</h1>
+  <h1>{{ object.desc }}</h1>
+  <h1>{{ object.last_login }}</h1>
+{% endblock %}

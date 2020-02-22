@@ -4,4 +4,10 @@
 
 {% block body %}
   <h1>Home</h1>
+
+  {% if user.is_authenticated %}
+    <p>You are currently signed in as {{ user.username }}</p>
+  {% else %}
+    <p>You are currently anonymous, <a href="{% url 'basic_app:login' %}">log in</a> to post blogs</p>
+  {% endif %}
 {% endblock %}

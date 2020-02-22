@@ -23,10 +23,10 @@ class IndexView(TemplateView):
     template_name = 'basic_app/index.html'
 
 class PostsListView(ListView):
-    context_object_name = 'posts_list'
-    model = models.Post
-
     template_name = 'basic_app/posts.html'
+
+    model = models.Post
+    context_object_name = 'posts_list'
 
 class PostsDetailView(DetailView):
     model = models.Post
@@ -55,14 +55,6 @@ class UserLoginView(LoginView):
 class UserLogoutView(LogoutView):
     template_name = 'basic_app/base.html'
 
-class PostsListView(ListView):
-    template_name = 'basic_app/posts_list.html'
-
-    model = models.Post
-    object_list = 'posts_list'
-
-    ordering = ['-datetime_posted']
-
 class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = 'basic_app/create_post.html'
     login_url = '../../login/'
@@ -80,14 +72,46 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
         return redirect('../posts')
 
+class PostsListView(ListView):
+    template_name = 'basic_app/posts_list.html'
+
+    model = models.Post
+    object_list = 'posts_list'
+
+    ordering = ['-datetime_posted']
+
 class FeedbackCreateView(CreateView):
     template_name = 'basic_app/feedback.html'
-    model = models.Feedback
 
-    fields = ['content']
+    form_class = forms.FeedbackForm
 
     def form_valid(self, form):
+        form.save()
+
         return render(self.request, self.template_name, context={
             'form': form,
             'valid_feedback': True
         })
+
+class MyProfileUpdateView(UpdateView):
+    template_name = 'basic_app/update_profile.html'
+
+    model = models.User
+    fields = ('profile_pic', 'desc')
+
+class UserProfileDetailView(DetailView):
+    template_name = 'basic_app/user_detail.html'
+
+    model = models.User
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+# Admin views
+
+class AdminPostsListView(ListView):
+    template_name = 'basic_app/adminposts_list.html'
+
+    model = models.AdminPost
+    context_object_name = 'adminposts_list'

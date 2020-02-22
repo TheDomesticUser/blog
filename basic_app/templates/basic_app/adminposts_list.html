@@ -1,0 +1,22 @@
+{% extends 'basic_app/base.html' %}
+
+{% block title %}Admin Posts{% endblock %}
+
+{% block body %}
+  <h1>Posts</h1>
+
+  {% for adminpost in adminposts_list %}
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">{{ adminpost.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <a href="{% url 'basic_app:view_profile' pk=adminpost.author.id %}">
+            {{ adminpost.author.username }}
+          </a>
+        </h6>
+        <p class="card-text">{{ adminpost.content }}</p>
+        <p class="card-text"><small class="text-muted">{{ adminpost.datetime_posted }}</small></p>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

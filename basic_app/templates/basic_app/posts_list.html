@@ -9,7 +9,11 @@
     <div class="card mb-4">
       <div class="card-body">
         <h5 class="card-title">{{ post.title }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{{ post.author.username }}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <a href="{% url 'basic_app:view_profile' pk=post.author.id %}">
+            {{ post.author.username }}
+          </a>
+        </h6>
         <p class="card-text">{{ post.content }}</p>
         <p class="card-text"><small class="text-muted">{{ post.datetime_posted }}</small></p>
       </div>
