@@ -24,11 +24,7 @@
           <a class="nav-link" href="{% url 'basic_app:posts' %}">Posts</a>
         </li>
         <!-- Admin posts -->
-        {% if user.is_admin %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'basic_app:admin_posts' %}">Admin Posts</a>
-          </li>
-        {% endif %}
+
         <li class="nav-item">
           <a class="nav-link" href="{% url 'basic_app:feedback' %}">Feedback</a>
         </li>
@@ -47,9 +43,6 @@
         </li>
         {% else %}
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'basic_app:create_post' %}">Create a post</a>
-        </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'basic_app:edit_profile' pk=user.id %}">My Profile</a>
         </li>

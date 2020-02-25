@@ -9,11 +9,10 @@ urlpatterns = [
     path('signup/', views.SignUpCreateView.as_view(), name='signup'),
     path('login/', views.UserLoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
-    path('posts/', views.PostsListView.as_view(), name='posts'),
     path('post/', views.PostCreateView.as_view(), name='create_post'),
+    path('posts/', views.PostsListView.as_view(), name='posts'),
     path('feedback/', views.FeedbackCreateView.as_view(), name='feedback'),
     re_path(r'^edit-profile/(?P<pk>\d+)/$', views.MyProfileUpdateView.as_view(), name='edit_profile'),
     re_path(r'^profile/(?P<pk>\d+)/$', views.UserProfileDetailView.as_view(), name='view_profile'),
     # Admin functionality
-    path('admin_posts/', views.AdminPostsListView.as_view(), name='admin_posts'),
 ]

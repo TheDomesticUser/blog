@@ -5,6 +5,8 @@
 {% block body %}
   <h1>Posts</h1>
 
+  <a href="{% url 'basic_app:createadmin_post' %}">Create a post</a>
+
   {% for adminpost in adminposts_list %}
     <div class="card mb-4">
       <div class="card-body">

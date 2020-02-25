@@ -108,10 +108,20 @@ class UserProfileDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         return context
 
+class PostCommentView(View):
+    def post(self, request):
+        pass
+
 # Admin views
 
-class AdminPostsListView(ListView):
-    template_name = 'basic_app/adminposts_list.html'
+# class AdminPostCreateView(CreateView):
+#     template_name = 'basic_app/create_post.html'
 
-    model = models.AdminPost
-    context_object_name = 'adminposts_list'
+#     model = models.AdminPost
+#     fields = ('title', 'content')
+
+# class AdminPostsListView(ListView):
+#     template_name = 'basic_app/adminposts_list.html'
+
+#     model = models.AdminPost
+#     context_object_name = 'adminposts_list'

@@ -35,3 +35,8 @@ class FeedbackForm(ModelForm):
     class Meta:
         model = models.Feedback
         fields = ('content',)
+
+class CommentPostForm(ModelForm):
+    class Meta:
+        model = models.Comment
+        fields = ('post_commented', 'commenter', 'comment')
