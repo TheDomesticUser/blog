@@ -14,9 +14,7 @@ class SignUpForm(ModelForm):
     password = forms.CharField(max_length=20, widget=forms.PasswordInput, validators=[
         MinLengthValidator(min_pass_length)
     ])
-    verify_password = forms.CharField(max_length=20, widget=forms.PasswordInput, validators=[
-        MinLengthValidator(min_pass_length),
-    ])
+    verify_password = forms.CharField(max_length=20, widget=forms.PasswordInput)
 
     class Meta:
         model = models.User
