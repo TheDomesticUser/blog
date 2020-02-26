@@ -19,19 +19,13 @@ from django.http import HttpResponse
 class IndexView(TemplateView):
     template_name = 'basic_app/index.html'
 
-class PostsListView(ListView):
-    template_name = 'basic_app/posts.html'
-
-    model = models.Post
-    context_object_name = 'posts_list'
-
 class PostsDetailView(DetailView):
     model = models.Post
 
-    template_name = 'basic_app/posts.html'
+    template_name = 'basic_app/info/user/detail/index.html'
 
 class SignUpCreateView(CreateView):    
-    template_name = 'basic_app/signup.html'
+    template_name = 'basic_app/signup/index.html'
     form_class = forms.SignUpForm
 
     def form_valid(self, form):
@@ -46,15 +40,15 @@ class SignUpCreateView(CreateView):
         })
 
 class UserLoginView(LoginView):
-    template_name = 'basic_app/login.html'
+    template_name = 'basic_app/login/index.html'
 
 @login_required
 class UserLogoutView(LogoutView):
     template_name = 'basic_app/base.html'
 
 class PostCreateView(LoginRequiredMixin, CreateView):
-    template_name = 'basic_app/create_post.html'
-    login_url = '../../login/'
+    template_name = 'basic_app/create/post/index.html'
+    login_url = '../../login/index.html'
 
     form_class = forms.CreatePostForm
 
@@ -68,7 +62,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return reverse('basic_app:posts')
 
 class PostsListView(ListView):
-    template_name = 'basic_app/posts_list.html'
+    template_name = 'basic_app/info/user/list/posts/index.html'
 
     model = models.Post
     object_list = 'posts_list'
@@ -76,7 +70,7 @@ class PostsListView(ListView):
     ordering = ['-datetime_posted']
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
-    template_name = 'basic_app/post_comment.html'
+    template_name = 'basic_app/create/comment/index.html'
 
     model = models.Comment
     fields = ('comment',)
@@ -94,7 +88,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return super(CommentCreateView, self).form_valid(form)
 
 class CommentsListView(ListView):
-    template_name = 'basic_app/comments_list.html'
+    template_name = 'basic_app/info/user/list/comments/index.html'
 
     model = models.Comment
     object_list = 'comments_list'
@@ -102,7 +96,7 @@ class CommentsListView(ListView):
     ordering = ['-datetime_commented']
 
 class FeedbackCreateView(CreateView):
-    template_name = 'basic_app/feedback.html'
+    template_name = 'basic_app/create/feedback/index.html'
 
     form_class = forms.FeedbackForm
 
@@ -115,13 +109,13 @@ class FeedbackCreateView(CreateView):
         })
 
 class MyProfileUpdateView(UpdateView):
-    template_name = 'basic_app/update_profile.html'
+    template_name = 'basic_app/update_profile/index.html'
 
     model = models.User
     fields = ('profile_pic', 'desc')
 
 class UserProfileDetailView(DetailView):
-    template_name = 'basic_app/user_detail.html'
+    template_name = 'basic_app/info/user/detail/index.html'
 
     model = models.User
 
