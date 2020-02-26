@@ -42,9 +42,8 @@ class SignUpCreateView(CreateView):
 class UserLoginView(LoginView):
     template_name = 'basic_app/login/index.html'
 
-@login_required
-class UserLogoutView(LogoutView):
-    template_name = 'basic_app/base.html'
+class UserLogoutView(LoginRequiredMixin, LogoutView):
+    template_name = 'basic_app/index.html'
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = 'basic_app/create/post/index.html'
@@ -108,7 +107,7 @@ class FeedbackCreateView(CreateView):
             'valid_feedback': True
         })
 
-class MyProfileUpdateView(UpdateView):
+class MyProfileUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'basic_app/update_profile/index.html'
 
     model = models.User
@@ -122,17 +121,3 @@ class UserProfileDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
-# Admin views
-
-# class AdminPostCreateView(CreateView):
-#     template_name = 'basic_app/create_post.html'
-
-#     model = models.AdminPost
-#     fields = ('title', 'content')
-
-# class AdminPostsListView(ListView):
-#     template_name = 'basic_app/adminposts_list.html'
-
-#     model = models.AdminPost
-#     context_object_name = 'adminposts_list'
