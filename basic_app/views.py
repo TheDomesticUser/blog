@@ -13,9 +13,6 @@ from django.shortcuts import redirect
 from . import forms
 from . import models
 
-# Python modules
-import datetime
-
 # Temporary
 from django.http import HttpResponse
 
@@ -84,16 +81,17 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     model = models.Comment
     fields = ('comment',)
 
-    def form_valid(self, form):
-        print(form)
+    def form_valid(self, form, *args, **kwargs):
+        # set the post that the user commented on
+        post_commented = models.Post.objects.filter(pk=self.kwargs['pk']).first()
+        post_commented.save()
 
-        # get the post that the user commented on
-        
+        form.instance.post_commented = post_commented
 
-        # get the current user instance as the commenter
-        commenter = self.request.user
+        # set the current user instance as the commenter
+        form.instance.commenter = self.request.user
 
-        return super(CreateArticle, self).form_valid(form)
+        return super(CommentCreateView, self).form_valid(form)
 
 class CommentsListView(ListView):
     pass

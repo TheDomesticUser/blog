@@ -36,7 +36,7 @@ class Comment(models.Model):
     datetime_commented = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.commenter.username + ': ' + str(self.date_commented)
+        return self.comment
 
 class Feedback(models.Model):
     content = models.CharField(max_length=1024)
