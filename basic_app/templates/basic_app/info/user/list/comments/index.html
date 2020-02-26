@@ -9,24 +9,24 @@
   
 
   <!-- Load the comments of the selected post -->
-  {% if comments_list %}
-  {% for comment in comments_list %}
-  <h1>Test</h1>
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
+  {% if object_list %}
+    {% for comment in object_list %}
+      <div class="card mb-2">
+        <div class="card-body">
+          <p class="card-text">
+            <a href="{% url 'basic_app:view_profile' pk=comment.commenter.id %}">
+              {{ comment.commenter.username }}
+            </a>
+          </p>
+          <p>{{ comment.comment }}</p>
+        </div>
       </div>
-    </div>
-  {% endfor %}
+    {% endfor %}
   {% else %}
     <p>
       There are currently no comments on the post.
       Be the first one to
-      <a href="">comment!</a>
+      <a href="{% url 'basic_app:post_comment' pk=postId %}">comment!</a>
     </p>
   {% endif %}
 {% endblock %}

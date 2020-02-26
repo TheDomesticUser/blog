@@ -86,13 +86,30 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 
         return super(CommentCreateView, self).form_valid(form)
 
+    def get_success_url(self):
+        return reverse('basic_app:comments_list', kwargs={ 'pk': self.kwargs['pk'] })
+
 class CommentsListView(ListView):
     template_name = 'basic_app/info/user/list/comments/index.html'
 
     model = models.Comment
-    object_list = 'comments_list'
 
     ordering = ['-datetime_commented']
+
+    def get(self, request, *args, **kwargs):
+        # get the id of the post for searching
+        postId = self.kwargs['pk']
+
+        # get the post through its id
+        post = models.Post.objects.filter(pk=postId).first()
+
+        # get all of the comments corresponding to the post, and set it in objects_list
+        postComments = models.Comment.objects.filter(post_commented=post)
+
+        return render(request, self.template_name, context={
+            'object_list': postComments,
+            'postId': postId
+        })
 
 class FeedbackCreateView(CreateView):
     template_name = 'basic_app/create/feedback/index.html'
