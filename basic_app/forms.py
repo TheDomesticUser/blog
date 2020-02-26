@@ -6,14 +6,34 @@ from django.core.validators import MinLengthValidator
 from basic_app import models
 
 class SignUpForm(ModelForm):
-    username = forms.CharField(max_length=20, validators=[MinLengthValidator(3)])
+    # field requirements
+    min_username_length = 3
+    min_pass_length = 8
+
+    username = forms.CharField(max_length=20, validators=[MinLengthValidator(min_username_length)])
     password = forms.CharField(max_length=20, widget=forms.PasswordInput, validators=[
-        MinLengthValidator(8)
+        MinLengthValidator(min_pass_length)
+    ])
+    verify_password = forms.CharField(max_length=20, widget=forms.PasswordInput, validators=[
+        MinLengthValidator(min_pass_length),
     ])
 
     class Meta:
         model = models.User
-        fields = ('username', 'password', 'email') # all fields
+        fields = ('username', 'password', 'verify_password', 'email') # all fields
+
+    # validate all of the user inputs
+    def clean(self):
+        # do not throw an error when cleaned_data key does not exist
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        verified_password = cleaned_data.get('verify_password')
+
+        # verify password equals verified password
+        if password != verified_password:
+            raise forms.ValidationError(
+                'Your password does not equal to the confirmed password!'
+            )
         
 class LoginForm(ModelForm):
     password = forms.CharField(max_length=20, widget=forms.PasswordInput)
