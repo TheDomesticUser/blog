@@ -94,7 +94,12 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return super(CommentCreateView, self).form_valid(form)
 
 class CommentsListView(ListView):
-    pass
+    template_name = 'basic_app/comments_list.html'
+
+    model = models.Comment
+    object_list = 'comments_list'
+
+    ordering = ['-datetime_commented']
 
 class FeedbackCreateView(CreateView):
     template_name = 'basic_app/feedback.html'

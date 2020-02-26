@@ -15,20 +15,32 @@
   {% endif %}
 
   {% for post in object_list %}
-    <div id="comments" class="card mb-4">
-      <div id="cardBody" class="card-body">
-        <h5 class="card-title">{{ post.title }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">
-          <a id="b" href="{% url 'basic_app:view_profile' pk=post.id %}">
-            {{ post.author.username }}
-          </a>
-        </h6>
-        <p class="card-text">{{ post.content }}</p>
-        <p class="card-text"><small class="text-muted">{{ post.datetime_posted }}</small></p>
-        <p class="card-text"><small class="text-muted"></small></p>
-        <p class="card-text"><small><a id="comment" href="{% url 'basic_app:post_comment' pk=post.id %}">Comment</a></small></p>
-      </div>
+  <div id="comments" class="card mb-4"
+    data-href="{% url 'basic_app:comments_list' pk=post.id %}">
+    <div id="cardBody" class="card-body">
+      <h5 class="card-title">{{ post.title }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">
+        <a id="b" href="{% url 'basic_app:view_profile' pk=post.id %}">
+          {{ post.author.username }}
+        </a>
+      </h6>
+      <p class="card-text">{{ post.content }}</p>
+      <p class="card-text"><small class="text-muted">{{ post.datetime_posted }}</small></p>
+      <p class="card-text"><small class="text-muted"></small></p>
+      <p class="card-text"><small><a id="comment" href="{% url 'basic_app:post_comment' pk=post.id %}">Comment</a></small></p>
     </div>
+  </div>
   {% endfor %}
+
+  <script>
+    const commentsDiv = document.querySelectorAll('div#comments');
+
+    // Take the user to the comments list url upon clicked
+    commentsDiv.forEach((commentDiv) => {
+      commentDiv.addEventListener('click', () => {
+        location.href = commentDiv.dataset.href;
+      });
+    });
+  </script>
 
 {% endblock %}
