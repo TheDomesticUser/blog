@@ -30,8 +30,8 @@ class Post(models.Model):
         return self.title
 
 class Comment(models.Model):
-    commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commenter')
     post_commented = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_commented')
+    commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commenter')
     comment = models.CharField(max_length=1024)
     datetime_commented = models.DateTimeField(auto_now=True)
 

@@ -38,15 +38,15 @@ class SignUpCreateView(CreateView):
     form_class = forms.SignUpForm
 
     def form_valid(self, form):
-        user = form.save(commit=False)
-
         # hash the password. Argon2 by default
-        user.password = make_password(user.password)
+        form.instance.password = make_password(form.cleaned_data['password'])
 
-        # save the user into the database
-        user.save()
+        form.save()
 
-        return render(self.request, self.template_name, context={ 'signup_success': True, 'form': form })
+        return render(self.request, self.template_name, context={
+            'form': form,
+            'signup_success': True
+        })
 
 class UserLoginView(LoginView):
     template_name = 'basic_app/login.html'
@@ -62,15 +62,13 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     form_class = forms.CreatePostForm
 
     def form_valid(self, form):
-        data = form.cleaned_data
+        # set the author of the post
+        form.instance.author = self.request.user
 
-        post = models.Post(author=self.request.user,
-            title=data['title'],
-            content=data['content'])
+        return super(PostCreateView, self).form_valid(form)
 
-        post.save()
-
-        return redirect('../posts')
+    def get_success_url(self):
+        return reverse('basic_app:posts')
 
 class PostsListView(ListView):
     template_name = 'basic_app/posts_list.html'
@@ -79,6 +77,26 @@ class PostsListView(ListView):
     object_list = 'posts_list'
 
     ordering = ['-datetime_posted']
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    template_name = 'basic_app/post_comment.html'
+
+    model = models.Comment
+    fields = ('comment',)
+
+    def form_valid(self, form):
+        print(form)
+
+        # get the post that the user commented on
+        
+
+        # get the current user instance as the commenter
+        commenter = self.request.user
+
+        return super(CreateArticle, self).form_valid(form)
+
+class CommentsListView(ListView):
+    pass
 
 class FeedbackCreateView(CreateView):
     template_name = 'basic_app/feedback.html'
@@ -107,10 +125,6 @@ class UserProfileDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
-class PostCommentView(View):
-    def post(self, request):
-        pass
 
 # Admin views
 
