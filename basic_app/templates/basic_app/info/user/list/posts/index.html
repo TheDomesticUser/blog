@@ -14,35 +14,49 @@
     </p>
   {% endif %}
 
-  {% for post in object_list %}
-  <div id="comments" class="card mb-4"
-    data-href="{% url 'basic_app:comments_list' pk=post.id %}">
-    <div id="cardBody" class="card-body">
-      <h5 class="card-title">{{ post.title }}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">
-        <a id="b" href="{% url 'basic_app:view_profile' pk=post.author.id %}">
-          {{ post.author.username }}
-        </a>
-      </h6>
-      <p class="card-text">{{ post.content }}</p>
-      <p class="card-text"><small class="text-muted">{{ post.datetime_posted }}</small></p>
-      <p class="card-text"><small class="text-muted"></small></p>
-      <p class="card-text"><small><a id="comment" href="{% url 'basic_app:post_comment' pk=post.id %}">Comment</a></small></p>
+  <div id="posts">
+    {% for post in object_list %}
+    <div id="post" class="card mb-4"
+      data-href="{% url 'basic_app:comments_list' pk=post.id %}">
+      <div id="cardBody" class="card-body">
+        <h5 class="card-title">{{ post.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <a id="b" href="{% url 'basic_app:view_profile' pk=post.author.id %}">
+            {{ post.author.username }}
+          </a>
+        </h6>
+        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text"><small class="text-muted">{{ post.datetime_posted }}</small></p>
+        <div class="row justify-content-between">
+          <div class="col-4">
+            <p class="card-text"><small><a id="comment" href="{% url 'basic_app:post_comment' pk=post.id %}">Comment</a></small></p>
+          </div>
+          
+          <!-- If the user is the author of the post, allow deletion -->
+          {% if post.author == user %}
+            <div class="col-2">
+              <button id="deletePost" class="btn btn-outline-danger btn-block"
+                data-href="{% url 'basic_app:delete_post' pk=post.id %}">Delete</button>
+            </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
 
   <script>
-    const commentsDiv = document.querySelectorAll('div#comments');
+    const postsDiv = document.querySelector('div#posts');
 
-    commentsDiv.forEach((commentDiv) => {
-      // Display the mouse pointer cursor icon when hovering over the commentsDiv
-      commentDiv.style.cursor = 'pointer';
+    // Set the cursor to the pointing icon when on the div
+    postsDiv.style.cursor = 'pointer';
 
-      // Take the user to the comments list url upon clicked
-      commentDiv.addEventListener('click', () => {
-        location.href = commentDiv.dataset.href;
-      });
+    // Perform different actions depending on the element clicked
+    postsDiv.addEventListener('click', function(e){
+      if (e.target.id = 'deletePost') {
+        // Redirect the user to the url for deleting posts
+        location.href = e.target.dataset.href;
+      }
     });
   </script>
 

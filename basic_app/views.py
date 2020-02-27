@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import redirect
 
 from . import forms
@@ -67,6 +67,14 @@ class PostsListView(ListView):
     object_list = 'posts_list'
 
     ordering = ['-datetime_posted']
+
+class PostDeleteView(DeleteView):
+    model = models.Post
+    success_url = reverse_lazy('basic_app:posts')
+
+    # Do not open a prompt for deletion confirmation
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
     template_name = 'basic_app/create/comment/index.html'
