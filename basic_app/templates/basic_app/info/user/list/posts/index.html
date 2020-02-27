@@ -28,9 +28,11 @@
         <p class="card-text">{{ post.content }}</p>
         <p class="card-text"><small class="text-muted">{{ post.datetime_posted }}</small></p>
         <div class="row justify-content-between">
-          <div class="col-4">
-            <p class="card-text"><small><a id="comment" href="{% url 'basic_app:post_comment' pk=post.id %}">Comment</a></small></p>
-          </div>
+          {% if user.is_authenticated %}
+            <div class="col-4">
+              <p class="card-text"><small><a id="comment" href="{% url 'basic_app:post_comment' pk=post.id %}">Comment</a></small></p>
+            </div>
+          {% endif %}
           
           <!-- If the user is the author of the post, allow deletion -->
           {% if post.author == user %}
@@ -46,18 +48,40 @@
   </div>
 
   <script>
-    const postsDiv = document.querySelector('div#posts');
+    // Get all of the posts
+    const postDivs = document.querySelectorAll('div#post');
 
-    // Set the cursor to the pointing icon when on the div
-    postsDiv.style.cursor = 'pointer';
+    postDivs.forEach(postDiv => {
+      // Set the cursor to the pointing icon hovering over the post div
+      postDiv.style.cursor = 'pointer';
 
-    // Perform different actions depending on the element clicked
-    postsDiv.addEventListener('click', function(e){
-      if (e.target.id = 'deletePost') {
-        // Redirect the user to the url for deleting posts
-        location.href = e.target.dataset.href;
-      }
+      // Perform different actions depending on the node in the post clicked
+      postDiv.addEventListener('click', function(e){
+        if (e.target.id === 'deletePost') {
+          // Delete this post through a GET request
+          location.href = e.target.dataset.href;
+
+          // Save the mouse offset vertical scroll in the session storage
+          sessionStorage.setItem('deletedPost', true);
+          sessionStorage.setItem('pageYOffset', window.pageYOffset);
+        } else {
+          // Redirect the user to the comments of the post
+          location.href = postDiv.dataset.href;
+        }
+      });
     });
+  </script>
+
+  <script>
+    // When user deletes a post, scroll down by X when redirect to same page
+    const isDeleted = sessionStorage.getItem('deletedPost');
+
+    if (isDeleted) {
+      const scrollYOffset = sessionStorage.getItem('pageYOffset');
+      window.scrollTo(0, scrollYOffset);
+
+      sessionStorage.setItem('deletedPost', false);
+    }
   </script>
 
 {% endblock %}
